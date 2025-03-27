@@ -45,13 +45,13 @@ static void cb_free(void* p, int n) {
     return free(p);
 }
 
-//void setUp(void)
-//{
-//}
+void setUp(void)
+{
+}
 
-//void tearDown(void)
-//{
-//}
+void tearDown(void)
+{
+}
 
 /**
  * @brief Comprueba que la funcion de fsm_new devuelve NULL 
@@ -367,7 +367,6 @@ void test_fsm_new_calledTwiceWithSameValidDataCreatesDifferentInstancePointer(vo
 
     free(f1);
     free(f2);
-
-    //TEST_IGNORE();
+   
 }
 
