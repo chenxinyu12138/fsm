@@ -331,9 +331,8 @@
 #   :post_compile_execute:
 #   :pre_link_execute:
   :post_link_execute:
-    :executable: echo
-    :arguments:
-      - "hello from post_link_execute"
+    :executable: cp
+    :arguments: [ "`find build/test/out/ | grep out$ | awk -F/ '{if (NF>4){print $0}}'`", "build/test/out"]
 #   :pre_test_fixture_execute:
 #   :post_test_fixture_execute:
 #   :pre_test:

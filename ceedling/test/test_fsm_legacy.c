@@ -96,8 +96,11 @@ void test_fsm_nullWhenFirstOrigStateIsMinusOne (void) {
   fsm_t *f = (fsm_t*)1;
   f = fsm_new(tt);
  
+  TEST_ASSERT_NULL(f);
+
+
 //TEST_ASSERT_EQUAL (XXX);
-  TEST_FAIL_MESSAGE("Implement the test");
+  //TEST_FAIL_MESSAGE("Implement the test");
 }
 
 /**
@@ -105,8 +108,14 @@ void test_fsm_nullWhenFirstOrigStateIsMinusOne (void) {
  * 
  */
 void test_fsm_nullWhenFirstDstStateIsMinusOne (void) {
+    fsm_trans_t tt[] = {{0, is_true, -1, do_nothing}};
+    fsm_t *f = (fsm_t*)1;
+    f = fsm_new(tt);
+    
+
+    TEST_ASSERT_NULL(f);
   
-  TEST_IGNORE();
+  //TEST_IGNORE();
 }
 
 /**
@@ -114,8 +123,14 @@ void test_fsm_nullWhenFirstDstStateIsMinusOne (void) {
  * 
  */
 void test_fsm_nullWhenFirstCheckFunctionIsNull (void) {
+    fsm_trans_t tt[] = {{0, NULL, 1, do_nothing}};
+    fsm_t *f = (fsm_t*)1;
+    f = fsm_new(tt);
+    
+    TEST_ASSERT_NULL(f);
   
-  TEST_IGNORE();
+  //TEST_IGNORE();
+
 }
 
 /**
