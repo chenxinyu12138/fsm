@@ -66,45 +66,26 @@ void test_fsm_new_nullWhenNullTransition(void)
     TEST_ASSERT_EQUAL (NULL, f);
 }
 
-/**
- * @brief Comprueba que la función de inicialización devuelve false si el puntero a la maquina de estado es NULL 
- *
- */
-//void test_fsm_init_falseWhenNullFsm(void)
-//{   
-   
-
-    //TEST_IGNORE();
-//}
 
 /**
- * @brief Función de inicializacion devuelve false si la tabla de transiciones es nula
- * 
- */
-//void test_fsm_init_falseWhenNullTransitions(void)
-//{
-    //TEST_IGNORE();
-//}
-
-/**
- * @brief La máquina de estados devuelve NULL
+ * @brief La maquina de estados devuelve NULL
  *        y no llama a fsm_malloc si el estado de origen
- *        de la primera transición es -1 (fin de la tabla)
+ *        de la primera transicion es -1 (fin de la tabla)
  */
 void test_fsm_nullWhenFirstOrigStateIsMinusOne (void) {
+
   fsm_trans_t tt[] = {{-1, is_true, 1, do_nothing}};
   fsm_t *f = (fsm_t*)1;
   f = fsm_new(tt);
- 
+
   TEST_ASSERT_NULL(f);
 
 
-//TEST_ASSERT_EQUAL (XXX);
-  //TEST_FAIL_MESSAGE("Implement the test");
+
 }
 
 /**
- * @brief La máquina de estados devuelve NULL y no llama a fsm_malloc si el estado de destino de la primera transición es -1 (fin de la tabla)
+ * @brief La maquina de estados devuelve NULL y no llama a fsm_malloc si el estado de destino de la primera transicion es -1 (fin de la tabla)
  * 
  */
 void test_fsm_nullWhenFirstDstStateIsMinusOne (void) {
@@ -115,11 +96,11 @@ void test_fsm_nullWhenFirstDstStateIsMinusOne (void) {
 
     TEST_ASSERT_NULL(f);
   
-  //TEST_IGNORE();
+ 
 }
 
 /**
- * @brief La máquina de estados devuelve NULL y no llama a fsm_malloc si la función de comprobación de la primera transición es NULL (fin de la tabla)
+ * @brief La maquina de estados devuelve NULL y no llama a fsm_malloc si la funcion de comprobacion de la primera transicion es NULL (fin de la tabla)
  * 
  */
 void test_fsm_nullWhenFirstCheckFunctionIsNull (void) {
@@ -129,13 +110,13 @@ void test_fsm_nullWhenFirstCheckFunctionIsNull (void) {
     
     TEST_ASSERT_NULL(f);
   
-  //TEST_IGNORE();
+ 
 
 }
 
 /**
- * @brief Devuelve puntero no NULL y llama a fsm_malloc (usa Callback a cb_mallock y fsm_malloc_ExpectXXX) al crear la maquina de estados con una transición válida
- *        con función de actualización (salida) NULL o no NULL.
+ * @brief Devuelve puntero no NULL y llama a fsm_malloc (usa Callback a cb_mallock y fsm_malloc_ExpectXXX) al crear la maquina de estados con una transicion valida
+ *        con funcion de actualizacion (salida) NULL o no NULL.
  *        Hay que liberar la memoria al final llamando a free
  * 
  */
@@ -143,28 +124,28 @@ TEST_CASE(NULL)
 TEST_CASE(do_nothing)
 void test_fsm_new_nonNullWhenOneValidTransitionCondition(fsm_output_func_t out)
 {
-        // 定义一张有效的转换表。假设状态 0 为初始状态，状态 1 为目标状态，EVENT_START 为有效事件。
+        
     fsm_trans_t tt[] = {
-        { 0, is_true, 1, out },  // 一条有效的转换记录
-        { -1, NULL, -1, NULL }          // 结束标志
+        { 0, is_true, 1, out },  
+        { -1, NULL, -1, NULL }          
     };
 
     fsm_malloc_Stub(cb_malloc);
-    fsm_free_Stub(cb_free);  // 添加这一行，设置 fsm_free 的回调
+    fsm_free_Stub(cb_free);  
     
     fsm_t *f = fsm_new(tt);
 
 
-    // 验证返回的状态机指针不为 NULL
+    
     TEST_ASSERT_NOT_NULL(f);
 
-    // 释放状态机占用的内存
+   
     fsm_destroy(f);
 }
 
 
 /**
- * @brief Estado inicial corresponde al estado de entrada de la primera transición de la lista al crear una maquiina de estados y es valido.
+ * @brief Estado inicial corresponde al estado de entrada de la primera transicion de la lista al crear una maquiina de estados y es valido.
  *        Usa Stub para fsm_malloc y luego libera la memoria con free
  */
 void test_fsm_new_fsmGetStateReturnsOrigStateOfFirstTransitionAfterInit(void)
@@ -221,7 +202,7 @@ void test_fsm_fire_isTrueReturnsFalseMeansDoNothingIsNotCalledAndStateKeepsTheSa
 }
 
 /**
- * @brief Comprueba que el puntero pasado a fsm_fire es pasado a la función de guarda cuando se comprueba una transición
+ * @brief Comprueba que el puntero pasado a fsm_fire es pasado a la funcion de guarda cuando se comprueba una transicion
  * 
  */
 void test_fsm_fire_checkFunctionCalledWithFsmPointerFromFsmFire(void)
@@ -244,7 +225,7 @@ void test_fsm_fire_checkFunctionCalledWithFsmPointerFromFsmFire(void)
 }
 
 /** 
- * @brief Comprueba que el fsm_fire funciona y tiene el estado correcto cuando la transición devuelve true (cambia) y cuando devuelve false (mantiene)
+ * @brief Comprueba que el fsm_fire funciona y tiene el estado correcto cuando la transicion devuelve true (cambia) y cuando devuelve false (mantiene)
  * 
  */
 TEST_CASE(false, 0)
@@ -286,7 +267,7 @@ void test_fsm_fire_checkFunctionIsCalledAndResultIsImportantForTransition(bool r
 
 
 /**
- * @brief La creación de una máquina de estados devuelve NULL si la reserva de memoria falla.
+ * @brief La creacion de una maquina de estados devuelve NULL si la reserva de memoria falla.
  *        Usa el Mock llamando a fsm_malloc_ExpectXXX sin Stub ni Callback.
  *
  */
@@ -302,7 +283,7 @@ void test_fsm_new_nullWhenFsmMallocReturnsNull(void)
 
     fsm_t *fsm = fsm_new(tt);
 
-    TEST_ASSERT_NULL(fsm);  // 如果 malloc 返回 NULL，fsm_new 应该返回 NULL
+    TEST_ASSERT_NULL(fsm);  
 
 
     //TEST_IGNORE();
@@ -326,14 +307,14 @@ void test_fsm_destroy_callsFsmFree(void)
 }
 
 /**
- * @brief Comprueba que solo se llame a la función de guarda que toca según el estado actual
+ * @brief Comprueba que solo se llame a la funcion de guarda que toca segun el estado actual
  * 
  */
 void test_fsm_fire_callsFirstIsTrueFromState0AndThenIsTrue2FromState1(void)
 {
     fsm_trans_t tt[] = {
         {0, is_true, 1, NULL},
-        {1, is_true2, 0, NULL},   //Descomentar cuando se haya declarado una nueva función para mock is_true2
+        {1, is_true2, 0, NULL},   //Descomentar cuando se haya declarado una nueva funcion para mock is_true2
         {-1, NULL, -1, NULL}
     };
 
@@ -361,7 +342,7 @@ void test_fsm_fire_callsFirstIsTrueFromState0AndThenIsTrue2FromState1(void)
 }
 
 /**
- * @brief Comprueba que se pueden crear dos instancias de máquinas de estados simultánteas y son punteros distintos.
+ * @brief Comprueba que se pueden crear dos instancias de maquinas de estados simultanteas y son punteros distintos.
  *        Usa Stub para fsm_malloc y luego libera la memoria con free
  *
  */
@@ -385,3 +366,49 @@ void test_fsm_new_calledTwiceWithSameValidDataCreatesDifferentInstancePointer(vo
    
 }
 
+
+
+/*
+Este test verifica que la función fsm_set_state realmente actualiza el estado de la máquina.
+Se inicializa un estado y luego se cambia a otro, comprobando que el cambio se ha producido correctamente.
+*/
+
+
+void test_set_state_should_set_fsm_state(void) {
+    fsm_t fsm;
+    fsm.current_state = 0;  
+    fsm_set_state(&fsm, 5); 
+    TEST_ASSERT_EQUAL(5, fsm.current_state);
+}
+
+
+void test_fire_should_call_out_function(void){
+
+    fsm_trans_t tt[] = {
+        {0, is_true, 1, do_nothing},
+        {-1, NULL, -1, NULL}
+    };
+
+    fsm_t fsm;
+    fsm_init(&fsm,tt);
+ 
+    is_true_IgnoreAndReturn(true);
+    do_nothing_ExpectAnyArgs();
+    fsm_fire(&fsm);
+
+    TEST_ASSERT_EQUAL(1, fsm_get_state(&fsm));
+
+
+}
+
+void test_fsm_init_should_not_crash_with_null_transition_table(void) {
+    fsm_t fsm;
+
+    fsm.p_tt = NULL;
+  
+    fsm_init(&fsm, NULL);
+
+  
+    TEST_ASSERT_NULL(fsm.p_tt);
+
+}

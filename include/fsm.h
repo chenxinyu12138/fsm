@@ -12,6 +12,7 @@
 /* Standard C includes */
 #include <stdbool.h>
 
+#define FSM_MAX_TRANSITIONS 128
 /* Typedefs --------------------------------------------------------------------*/
 
 /**

@@ -14,15 +14,16 @@
 /* Other includes */
 #include "fsm.h"
 
-// LCOV_EXCL_START
-__attribute__((weak)) void *fsm_malloc(size_t s) {
-    return malloc(s);
+//GCOVR_EXCL_START
+void* __attribute__((weak)) fsm_malloc(size_t s)
+{
+ return malloc(s);
 }
-
-__attribute__((weak)) void fsm_free(void *p) {
-    free(p);
+void __attribute__((weak)) fsm_free(void* p)
+{
+ free(p);
 }
-// LCOV_EXCL_STOP
+//GCOVR_EXCL_STOP
 
 fsm_t *fsm_new(fsm_trans_t *p_tt)
 {
@@ -54,6 +55,8 @@ void fsm_init(fsm_t *p_fsm, fsm_trans_t *p_tt)
         p_fsm->p_tt = p_tt;
         p_fsm->current_state = p_tt->orig_state;
     }
+
+  
 }
 
 int fsm_get_state(fsm_t *p_fsm)

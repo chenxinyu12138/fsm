@@ -6,6 +6,9 @@
     "ceedlingExplorer.prettyTestLabel": true,
     "ceedlingExplorer.projectPath": "./ceedling",
     "files.associations": {
-        "fsm.h": "c"
+        "fsm.h": "c",
+        "__locale": "c",
+        "format": "c",
+        "ios": "c"
     },
 }
