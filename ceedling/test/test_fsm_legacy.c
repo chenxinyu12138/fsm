@@ -72,15 +72,12 @@ void test_fsm_new_nullWhenNullTransition(void)
  *        y no llama a fsm_malloc si el estado de origen
  *        de la primera transicion es -1 (fin de la tabla)
  */
-void test_fsm_nullWhenFirstOrigStateIsMinusOne (void) {
+void test_fsm_nullWhenFirstOrigStateIsMinusOne(void) {
 
   fsm_trans_t tt[] = {{-1, is_true, 1, do_nothing}};
   fsm_t *f = (fsm_t*)1;
   f = fsm_new(tt);
-
   TEST_ASSERT_NULL(f);
-
-
 
 }
 
@@ -88,7 +85,7 @@ void test_fsm_nullWhenFirstOrigStateIsMinusOne (void) {
  * @brief La maquina de estados devuelve NULL y no llama a fsm_malloc si el estado de destino de la primera transicion es -1 (fin de la tabla)
  * 
  */
-void test_fsm_nullWhenFirstDstStateIsMinusOne (void) {
+void test_fsm_nullWhenFirstDstStateIsMinusOne(void){
     fsm_trans_t tt[] = {{0, is_true, -1, do_nothing}};
     fsm_t *f = (fsm_t*)1;
     f = fsm_new(tt);
@@ -103,8 +100,9 @@ void test_fsm_nullWhenFirstDstStateIsMinusOne (void) {
  * @brief La maquina de estados devuelve NULL y no llama a fsm_malloc si la funcion de comprobacion de la primera transicion es NULL (fin de la tabla)
  * 
  */
-void test_fsm_nullWhenFirstCheckFunctionIsNull (void) {
-    fsm_trans_t tt[] = {{0, NULL, 1, do_nothing}};
+void test_fsm_nullWhenFirstCheckFunctionIsNull(void){
+    fsm_trans_t tt[] = {{0, NULL, 1, do_nothing}
+    };
     fsm_t *f = (fsm_t*)1;
     f = fsm_new(tt);
     
@@ -369,7 +367,7 @@ void test_fsm_new_calledTwiceWithSameValidDataCreatesDifferentInstancePointer(vo
 
 
 /*
-Este test verifica que la función fsm_set_state realmente actualiza el estado de la máquina.
+Este test verifica que la funcion fsm_set_state realmente actualiza el estado de la maquina.
 Se inicializa un estado y luego se cambia a otro, comprobando que el cambio se ha producido correctamente.
 */
 
@@ -381,6 +379,18 @@ void test_set_state_should_set_fsm_state(void) {
     TEST_ASSERT_EQUAL(5, fsm.current_state);
 }
 
+/**
+ * @brief Verifica que la funcion de salida (out) se llama correctamente durante una transicion valida.
+ *
+ * Este test configura una tabla de transiciones donde:
+ *  - La condicion de entrada (is_true) siempre devuelve verdadero.
+ *  - La funcion de salida (do_nothing) debe ser llamada cuando ocurre la transicion.
+ *
+ * Se utiliza mocking para:
+ *  - Ignorar la condicion con is_true_IgnoreAndReturn(true)
+ *  - Verificar que se llama la funcion do_nothing con cualquier argumento
+ * Finalmente se comprueba que el estado de la FSM ha cambiado correctamente.
+ */
 
 void test_fire_should_call_out_function(void){
 
@@ -401,6 +411,15 @@ void test_fire_should_call_out_function(void){
 
 }
 
+/**
+ * @brief Verifica que fsm_init no provoca errores al recibir una tabla de transiciones NULL.
+ *
+ * Este test inicializa manualmente un objeto fsm y luego llama a fsm_init pasando un puntero NULL
+ * como tabla de transiciones. El objetivo es comprobar que no se produce ningun fallo o comportamiento inesperado.
+ *
+ * Se verifica que fsm.p_tt sigue siendo NULL despues de la inicializacion.
+ */
+
 void test_fsm_init_should_not_crash_with_null_transition_table(void) {
     fsm_t fsm;
 
@@ -412,3 +431,38 @@ void test_fsm_init_should_not_crash_with_null_transition_table(void) {
     TEST_ASSERT_NULL(fsm.p_tt);
 
 }
+
+void test_fsm_init_ReturnsZeroWhenExceedingMaxTransitions(void){
+
+    int n = rand();  
+    fsm_trans_t tt[n + 2];
+
+    for (int i = 0; i < n + 1; i++) {
+        tt[i].orig_state = i;
+        tt[i].in = is_true;
+        tt[i].dest_state = i + 1;
+        tt[i].out = do_nothing;
+    }
+
+    tt[n + 1].orig_state = -1;
+    tt[n + 1].in = NULL;
+    tt[n + 1].dest_state = -1;
+    tt[n + 1].out = NULL;
+
+    fsm_t f;
+    int result = fsm_init(&f, tt);
+
+    if(n > FSM_MAX_TRANSITIONS){
+        TEST_ASSERT_EQUAL_INT(0, result);
+    }else
+    {
+        TEST_ASSERT_EQUAL_INT(n, result);
+
+    }
+    
+
+}
+
+
+
+
