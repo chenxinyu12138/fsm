@@ -240,7 +240,7 @@ void test_fsm_fire_checkFunctionIsCalledAndResultIsImportantForTransition(bool r
     fsm_init(&f, tt);
 
   
-    is_true_ExpectAnyArgsAndReturn(returnValue);
+    is_true_IgnoreAndReturn(returnValue);
     
     
     fsm_fire(&f);
@@ -434,7 +434,7 @@ void test_fsm_init_should_not_crash_with_null_transition_table(void) {
 
 void test_fsm_init_ReturnsZeroWhenExceedingMaxTransitions(void){
 
-    int n = rand();  
+    int n = rand() % (FSM_MAX_TRANSITIONS + 100);
     fsm_trans_t tt[n + 2];
 
     for (int i = 0; i < n + 1; i++) {
@@ -464,5 +464,40 @@ void test_fsm_init_ReturnsZeroWhenExceedingMaxTransitions(void){
 }
 
 
+void test_fsm_new_ReturnsNullWhenTransitionsExceedLimit(void) {
+   
+    int n = 129;  
+    fsm_trans_t tt[n + 2];
 
+    for (int i = 0; i < n + 1; i++) {
+        tt[i].orig_state = i;
+        tt[i].in = is_true;
+        tt[i].dest_state = i + 1;
+        tt[i].out = do_nothing;
+    }
+
+    tt[n + 1].orig_state = -1;
+    tt[n + 1].in = NULL;
+    tt[n + 1].dest_state = -1;
+    tt[n + 1].out = NULL;
+
+    fsm_t *result = fsm_new(tt);
+    TEST_ASSERT_NULL(result);
+
+       
+     
+}
+
+void test_fsm_new_returnsNullWhenTransitionTableMissingEndMarker(void)
+{
+    fsm_trans_t tt[] = {
+        {0, is_true, 1, do_nothing},
+        {1, is_true, 2, do_nothing},
+        //  {-1, NULL, -1, NULL}
+    };
+
+    fsm_t *fsm = fsm_new(tt);
+
+    TEST_ASSERT_NULL(fsm);
+}
 

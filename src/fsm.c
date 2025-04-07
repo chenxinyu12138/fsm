@@ -54,15 +54,25 @@ int fsm_init(fsm_t *p_fsm, fsm_trans_t *p_tt)
     {
         int count = 0;
         while (1) {
-            if ((p_tt[count].orig_state == -1) && (p_tt[count].dest_state == -1) && (p_tt[count].out == NULL) && (p_tt[count].in == NULL)) {
+
+            if((p_tt[count].orig_state == -1) && (p_tt[count].dest_state == -1)  ){
+               if((p_tt[count].out == NULL)){
+                    if((p_tt[count].in == NULL)){
+                        break;
+
+                    }
+              
+
+               }
                 
-                            break;         
+
             }
             count++;
+            if (count > FSM_MAX_TRANSITIONS){
+                return 0;
+            }
         }
-        if (count > FSM_MAX_TRANSITIONS){
-            return 0;
-        }
+
         p_fsm->p_tt = p_tt;
         p_fsm->current_state = p_tt->orig_state;
         return count;
