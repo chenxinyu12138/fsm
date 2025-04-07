@@ -35,8 +35,15 @@ fsm_t *fsm_new(fsm_trans_t *p_tt)
     {
         return NULL;
     }
+    fsm_t tem_fsm;
+    int re = fsm_init(&tem_fsm, p_tt);
+    if (re == 0){
+        return NULL;
+
+    }
     fsm_t *p_fsm = (fsm_t *)fsm_malloc(sizeof(fsm_t));
-    if (p_fsm != NULL)
+
+    if (p_fsm !=NULL)
     {
         fsm_init(p_fsm, p_tt);
     }
@@ -50,23 +57,11 @@ void fsm_destroy(fsm_t *p_fsm)
 
 int fsm_init(fsm_t *p_fsm, fsm_trans_t *p_tt)
 {
+    int count = 0;
     if (p_tt != NULL)
     {
-        int count = 0;
-        while (1) {
-
-            if((p_tt[count].orig_state == -1) && (p_tt[count].dest_state == -1)  ){
-               if((p_tt[count].out == NULL)){
-                    if((p_tt[count].in == NULL)){
-                        break;
-
-                    }
-              
-
-               }
-                
-
-            }
+        
+        while (!((p_tt[count].orig_state == -1) && (p_tt[count].dest_state == -1) && (p_tt[count].out == NULL) && (p_tt[count].in == NULL))) {
             count++;
             if (count > FSM_MAX_TRANSITIONS){
                 return 0;
@@ -75,8 +70,10 @@ int fsm_init(fsm_t *p_fsm, fsm_trans_t *p_tt)
 
         p_fsm->p_tt = p_tt;
         p_fsm->current_state = p_tt->orig_state;
-        return count;
+       
     }
+    return count;
+
 }
 
 int fsm_get_state(fsm_t *p_fsm)
