@@ -58,14 +58,17 @@ void fsm_destroy(fsm_t *p_fsm)
 int fsm_init(fsm_t *p_fsm, fsm_trans_t *p_tt)
 {
     int count = 0;
+
     if (p_tt != NULL)
     {
-        
-        while (!((p_tt[count].orig_state == -1) && (p_tt[count].dest_state == -1) && (p_tt[count].out == NULL) && (p_tt[count].in == NULL))) {
-            count++;
+
+        while (!((p_tt[count].orig_state == -1) && (p_tt[count].dest_state == -1))) {
+                
             if (count > FSM_MAX_TRANSITIONS){
                 return 0;
             }
+            
+            count++;
         }
 
         p_fsm->p_tt = p_tt;
@@ -91,7 +94,7 @@ void fsm_fire(fsm_t *p_fsm)
     fsm_trans_t *p_t;
     for (p_t = p_fsm->p_tt; p_t->orig_state >= 0; ++p_t)
     {
-        if ((p_fsm->current_state == p_t->orig_state) && (p_t->in != NULL) && (p_t->in(p_fsm)))
+        if ((p_fsm->current_state == p_t->orig_state) && ((p_t->in == NULL) || (p_t->in(p_fsm))))
         {
             p_fsm->current_state = p_t->dest_state;
             if (p_t->out)
