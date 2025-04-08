@@ -16,9 +16,6 @@
  * @date 2024-04-09
  * 
  */
-fsm_input_func_t GuardNull(void){
-    return NULL;
-}
 
 
 /**
@@ -424,6 +421,13 @@ void test_fsm_init_should_not_crash_with_null_transition_table(void) {
 
 }
 
+/**
+ * @brief Comprueba que la funcion fsm_init devuelve 0 si la tabla de transiciones excede el limite permitido.
+ * 
+ * Una devolucion de 0 indica error en la inicializacion por exceso de transiciones.
+ * En caso contrario, devuelve el numero de transiciones validas en la tabla.
+ */
+
 void test_fsm_init_ReturnsZeroWhenExceedingMaxTransitions(void){
 
     int n = rand() % (FSM_MAX_TRANSITIONS + 100);
@@ -454,7 +458,10 @@ void test_fsm_init_ReturnsZeroWhenExceedingMaxTransitions(void){
     
 
 }
-
+/**
+ * @brief  Comprueba que la funcion fsm_new devuelve NULL si la tabla de transiciones excede el limite de transiciones. 
+ * 
+ */
 
 void test_fsm_new_ReturnsNullWhenTransitionsExceedLimit(void) {
    
@@ -480,6 +487,11 @@ void test_fsm_new_ReturnsNullWhenTransitionsExceedLimit(void) {
      
 }
 
+/**
+ * @brief  Comprueba que la funcion fsm_new devuelve NULL si la tabla de transiciones no termina con el marcador {-1, NULL, -1, NULL}.             
+ * 
+ */
+
 void test_fsm_new_returnsNullWhenTransitionTableMissingEndMarker(void)
 {
     fsm_trans_t tt[] = {
@@ -494,6 +506,15 @@ void test_fsm_new_returnsNullWhenTransitionTableMissingEndMarker(void)
 }
 
 
+/**
+ * @brief Comprueba que la funcion de guarda NULL actua como verdadero y provoca la transicion.
+ *
+ * Este test configura una tabla de transiciones donde:
+ *  - La condicion de entrada es NULL (actua como verdadero).
+ *  - La funcion de salida es NULL.
+ *
+ * Se verifica que el estado de la FSM cambia correctamente al estado destino.
+ */     
 void test_fsm_fire_GuardNullActsAsTrueAndTriggersTransition(void)
 {
     fsm_trans_t tt[] = {
@@ -508,9 +529,11 @@ void test_fsm_fire_GuardNullActsAsTrueAndTriggersTransition(void)
     fsm_fire(&fsm);
 
     TEST_ASSERT_EQUAL_INT(1, fsm_get_state(&fsm));
-
     
 }
+
+
+
 
 
 
