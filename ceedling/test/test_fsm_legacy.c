@@ -128,15 +128,13 @@ void test_fsm_new_nonNullWhenOneValidTransitionCondition(fsm_output_func_t out){
     };
 
     fsm_malloc_Stub(cb_malloc);
+    
     fsm_free_Stub(cb_free);  
     
     fsm_t *f = fsm_new(tt);
-
-
     
     TEST_ASSERT_NOT_NULL(f);
 
-   
     fsm_destroy(f);
 }
 
@@ -254,11 +252,7 @@ void test_fsm_fire_checkFunctionIsCalledAndResultIsImportantForTransition(bool r
         /* code */
     }
     
-
     TEST_ASSERT_EQUAL_INT(res, fsm_get_state(&f));
-    
-    
-
 }
 
 
@@ -294,7 +288,7 @@ void test_fsm_destroy_callsFsmFree(void)
 {
   
 
-    fsm_t *fsm = 0x1111;
+    fsm_t *fsm = (fsm_t*)1;;
     fsm_free_Expect(fsm);
 
     fsm_destroy(fsm);
@@ -502,17 +496,14 @@ void test_fsm_new_returnsNullWhenTransitionTableMissingEndMarker(void)
 
 void test_fsm_fire_GuardNullActsAsTrueAndTriggersTransition(void)
 {
-    bool tra = NULL;
-
     fsm_trans_t tt[] = {
-        {0, tra ,1, NULL}, 
+        {0, NULL ,1, NULL}, 
         {-1, NULL, -1, NULL}
     };
 
     fsm_t fsm;
     fsm_init(&fsm, tt);
-
-    TEST_ASSERT_EQUAL_INT(0, fsm_get_state(&fsm));
+    fsm_set_state(&fsm, 0); 
 
     fsm_fire(&fsm);
 

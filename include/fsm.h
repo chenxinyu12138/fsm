@@ -102,6 +102,6 @@ void fsm_set_state(fsm_t *p_fsm, int state);
  *
  * @param p_fsm Pointer to the memory address where the new state machine is located
  */
-int fsm_fire(fsm_t *p_fsm);
+void fsm_fire(fsm_t *p_fsm);
 
 #endif /* FSM_H_ */

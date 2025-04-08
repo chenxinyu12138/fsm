@@ -20,9 +20,9 @@
             },
             "osx": {
                 "MIMode": "lldb",
-                "miDebuggerPath": "/Users/chenxinyu/.vscode/extensions/ms-vscode.cpptools-1.23.6-darwin-x64/debugAdapters/lldb-mi/bin/lldb-mi", // CHECK THE CORRECT PATH FOR YOUR MACHINE
+                "miDebuggerPath": "/Users/chenxinyu/.vscode/extensions/ms-vscode.cpptools-1.24.5-darwin-x64/debugAdapters/lldb-mi/bin/lldb-mi", // CHECK THE CORRECT PATH FOR YOUR MACHINE
             },
-            "program": "${workspaceFolder}/ceedling/build/test/out/${command:ceedlingExplorer.debugTestExecutable}",
+            "program": "${workspaceFolder}/ceedling/build/test/out/test_fsm_legacy/${command:ceedlingExplorer.debugTestExecutable}",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
