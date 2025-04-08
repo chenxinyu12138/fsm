@@ -16,10 +16,10 @@
  * @date 2024-04-09
  * 
  */
-static bool always_false(fsm_t *f) {
-    (void)f;
-    return false;
+fsm_input_func_t GuardNull(void){
+    return NULL;
 }
+
 
 /**
  * @brief Stub or Callback for fsm_malloc that calls real malloc. 
@@ -120,8 +120,7 @@ void test_fsm_nullWhenFirstCheckFunctionIsNull(void){
  */
 TEST_CASE(NULL)
 TEST_CASE(do_nothing)
-void test_fsm_new_nonNullWhenOneValidTransitionCondition(fsm_output_func_t out)
-{
+void test_fsm_new_nonNullWhenOneValidTransitionCondition(fsm_output_func_t out){
         
     fsm_trans_t tt[] = {
         { 0, is_true, 1, out },  
@@ -228,8 +227,7 @@ void test_fsm_fire_checkFunctionCalledWithFsmPointerFromFsmFire(void)
  */
 TEST_CASE(false, 0)
 TEST_CASE(true, 1)
-void test_fsm_fire_checkFunctionIsCalledAndResultIsImportantForTransition(bool returnValue, int expectedState)
-{
+void test_fsm_fire_checkFunctionIsCalledAndResultIsImportantForTransition(bool returnValue, int expectedState){
     
     fsm_trans_t tt[] = {
         {0, is_true, 1, NULL},
@@ -500,4 +498,33 @@ void test_fsm_new_returnsNullWhenTransitionTableMissingEndMarker(void)
 
     TEST_ASSERT_NULL(fsm);
 }
+
+
+void test_fsm_fire_GuardNullActsAsTrueAndTriggersTransition(void)
+{
+    bool tra = NULL;
+
+    fsm_trans_t tt[] = {
+        {0, tra ,1, NULL}, 
+        {-1, NULL, -1, NULL}
+    };
+
+    fsm_t fsm;
+    fsm_init(&fsm, tt);
+
+    TEST_ASSERT_EQUAL_INT(0, fsm_get_state(&fsm));
+
+    fsm_fire(&fsm);
+
+    TEST_ASSERT_EQUAL_INT(1, fsm_get_state(&fsm));
+
+    
+}
+
+
+
+
+
+
+
 
