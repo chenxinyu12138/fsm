@@ -91,21 +91,26 @@ void fsm_set_state(fsm_t *p_fsm, int state)
 
 int fsm_fire(fsm_t *p_fsm)
 {
-    fsm_trans_t *p_t;
-    for (p_t = p_fsm->p_tt; p_t->orig_state >= 0; ++p_t)
-    {
-        if ((p_fsm->current_state == p_t->orig_state) && ((p_t->in == NULL) || (p_t->in(p_fsm))))
-        {
-            p_fsm->current_state = p_t->dest_state;
-            if (p_t->out)
-            {
-                p_t->out(p_fsm);
-            }
-            break;
-        }
-    }
 
-    return 2;
+
+int found = 0;
+
+for (fsm_trans_t *p_t = p_fsm->p_tt; p_t->orig_state >= 0; ++p_t)
+{
+    if (p_t->orig_state != p_fsm->current_state)
+        continue;
+
+    found = 1; 
+
+    if (p_t->in == NULL || p_t->in(p_fsm)) {
+        p_fsm->current_state = p_t->dest_state;
+        if (p_t->out)
+            p_t->out(p_fsm);
+        return 1;  
+    }
+}
+
+return found ? 0 : -1;
 }
 
 
