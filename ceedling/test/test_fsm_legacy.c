@@ -532,6 +532,68 @@ void test_fsm_fire_GuardNullActsAsTrueAndTriggersTransition(void)
     
 }
 
+/**
+ * @brief fsm_fire devuelve -1 si no hay transiciones posibles para el estado actual.
+ */
+void test_fsm_fire_ReturnsMinusOneWhenNoTransitionsForState(void) {
+    fsm_trans_t tt[] = {
+        {1, is_true, 2, NULL},  // No hay transicion desde estado 0
+        {-1, NULL, -1, NULL}
+    };
+
+    fsm_t fsm;
+    fsm_init(&fsm, tt);
+    fsm_set_state(&fsm, 0);
+
+    int result = fsm_fire(&fsm);
+
+    TEST_ASSERT_EQUAL_INT(-1, result);
+    TEST_ASSERT_EQUAL_INT(0, fsm_get_state(&fsm));  // el estado no cambia
+}
+
+
+/**
+ * @brief fsm_fire devuelve 0 si hay transiciones pero todas las funciones de guarda devuelven false.
+ */
+void test_fsm_fire_ReturnsZeroWhenGuardReturnsFalse(void) {
+    fsm_trans_t tt[] = {
+        {0, is_true, 1, NULL},
+        {-1, NULL, -1, NULL}
+    };
+
+    fsm_t fsm;
+    fsm_init(&fsm, tt);
+
+    is_true_ExpectAndReturn(&fsm,false);
+
+    int result = fsm_fire(&fsm);
+
+    TEST_ASSERT_EQUAL_INT(0, result);
+    TEST_ASSERT_EQUAL_INT(0, fsm_get_state(&fsm));  // el estado no cambia
+}
+
+/**
+ * @brief fsm_fire devuelve 1 si se cumple al menos una condicion de guarda y se realiza la transicion.
+ */
+void test_fsm_fire_ReturnsOneWhenGuardIsTrueAndFiresTransition(void) {
+    fsm_trans_t tt[] = {
+        {0, is_true, 1, NULL},
+        {-1, NULL, -1, NULL}
+    };
+
+    fsm_t fsm;
+    fsm_init(&fsm, tt);
+
+
+    is_true_ExpectAndReturn(&fsm,true);
+
+    int result = fsm_fire(&fsm);
+
+    TEST_ASSERT_EQUAL_INT(1, result);
+    TEST_ASSERT_EQUAL_INT(1, fsm_get_state(&fsm));  // el estado cambia
+}
+
+
 
 
 

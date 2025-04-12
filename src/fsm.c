@@ -89,7 +89,7 @@ void fsm_set_state(fsm_t *p_fsm, int state)
     p_fsm->current_state = state;
 }
 
-void fsm_fire(fsm_t *p_fsm)
+int fsm_fire(fsm_t *p_fsm)
 {
     fsm_trans_t *p_t;
     for (p_t = p_fsm->p_tt; p_t->orig_state >= 0; ++p_t)
@@ -104,6 +104,8 @@ void fsm_fire(fsm_t *p_fsm)
             break;
         }
     }
+
+    return 2;
 }
 
 
