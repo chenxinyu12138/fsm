@@ -14,6 +14,17 @@
 /* Other includes */
 #include "fsm.h"
 
+//GCOVR_EXCL_START
+void* __attribute__((weak)) fsm_malloc(size_t s)
+{
+ return malloc(s);
+}
+void __attribute__((weak)) fsm_free(void* p)
+{
+ free(p);
+}
+//GCOVR_EXCL_STOP
+
 fsm_t *fsm_new(fsm_trans_t *p_tt)
 {
     if (p_tt == NULL)
@@ -24,7 +35,7 @@ fsm_t *fsm_new(fsm_trans_t *p_tt)
     {
         return NULL;
     }
-    fsm_t *p_fsm = (fsm_t *)malloc(sizeof(fsm_t));
+    fsm_t *p_fsm = (fsm_t *)fsm_malloc(sizeof(fsm_t));
     if (p_fsm != NULL)
     {
         fsm_init(p_fsm, p_tt);
@@ -34,7 +45,7 @@ fsm_t *fsm_new(fsm_trans_t *p_tt)
 
 void fsm_destroy(fsm_t *p_fsm)
 {
-    free(p_fsm);
+    fsm_free(p_fsm);
 }
 
 void fsm_init(fsm_t *p_fsm, fsm_trans_t *p_tt)
@@ -44,6 +55,8 @@ void fsm_init(fsm_t *p_fsm, fsm_trans_t *p_tt)
         p_fsm->p_tt = p_tt;
         p_fsm->current_state = p_tt->orig_state;
     }
+
+  
 }
 
 int fsm_get_state(fsm_t *p_fsm)
