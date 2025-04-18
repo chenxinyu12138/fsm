@@ -35,8 +35,15 @@ fsm_t *fsm_new(fsm_trans_t *p_tt)
     {
         return NULL;
     }
+    fsm_t tem_fsm;
+    int re = fsm_init(&tem_fsm, p_tt);
+    if (re == 0){
+        return NULL;
+
+    }
     fsm_t *p_fsm = (fsm_t *)fsm_malloc(sizeof(fsm_t));
-    if (p_fsm != NULL)
+
+    if (p_fsm !=NULL)
     {
         fsm_init(p_fsm, p_tt);
     }
@@ -48,15 +55,28 @@ void fsm_destroy(fsm_t *p_fsm)
     fsm_free(p_fsm);
 }
 
-void fsm_init(fsm_t *p_fsm, fsm_trans_t *p_tt)
+int fsm_init(fsm_t *p_fsm, fsm_trans_t *p_tt)
 {
+    int count = 0;
+
     if (p_tt != NULL)
     {
+
+        while (!((p_tt[count].orig_state == -1) && (p_tt[count].dest_state == -1))) {
+                
+            if (count > FSM_MAX_TRANSITIONS){
+                return 0;
+            }
+            
+            count++;
+        }
+
         p_fsm->p_tt = p_tt;
         p_fsm->current_state = p_tt->orig_state;
+       
     }
+    return count;
 
-  
 }
 
 int fsm_get_state(fsm_t *p_fsm)
@@ -69,19 +89,28 @@ void fsm_set_state(fsm_t *p_fsm, int state)
     p_fsm->current_state = state;
 }
 
-void fsm_fire(fsm_t *p_fsm)
+int fsm_fire(fsm_t *p_fsm)
 {
-    fsm_trans_t *p_t;
-    for (p_t = p_fsm->p_tt; p_t->orig_state >= 0; ++p_t)
-    {
-        if ((p_fsm->current_state == p_t->orig_state) && p_t->in(p_fsm))
-        {
-            p_fsm->current_state = p_t->dest_state;
-            if (p_t->out)
-            {
-                p_t->out(p_fsm);
-            }
-            break;
-        }
+
+
+int found = 0;
+
+for (fsm_trans_t *p_t = p_fsm->p_tt; p_t->orig_state >= 0; ++p_t)
+{
+    if (p_t->orig_state != p_fsm->current_state)
+        continue;
+
+    found = 1; 
+
+    if (p_t->in == NULL || p_t->in(p_fsm)) {
+        p_fsm->current_state = p_t->dest_state;
+        if (p_t->out)
+            p_t->out(p_fsm);
+        return 1;  
     }
 }
+
+return found ? 0 : -1;
+}
+
+

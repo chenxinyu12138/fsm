@@ -9,6 +9,8 @@
         "fsm.h": "c",
         "__locale": "c",
         "format": "c",
-        "ios": "c"
+        "ios": "c",
+        "chrono": "c",
+        "functional": "c"
     },
 }
