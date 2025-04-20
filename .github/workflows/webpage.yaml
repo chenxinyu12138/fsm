@@ -18,19 +18,62 @@ jobs:
         run: gem install ceedling -v 1.0.1
       - name: Install GCOVR
         run: sudo apt-get install -y -qq gcovr
+      # === 生成覆盖率并复制到 gh‑pages ========================================
       - name: Run Coverage
         run: |
-          CUR=$PWD; 
-          for i in `find . -type d -name 'ceedling'`; do cd $CUR; P=${i%ceedling}; echo $P; mkdir -p $CUR/gh-pages/$P; cd $i; ceedling gcov:all; cp -r build/artifacts/gcov $CUR/gh-pages/$P; mv $CUR/gh-pages/$P/gcov/GcovCoverageResults.html $CUR/gh-pages/$P/gcov/index.html; done
+          set -euo pipefail
+          ROOT=$PWD
+          find . -type d -name 'ceedling' -print0 | while IFS= read -r -d '' CEED_DIR; do
+            REL=${CEED_DIR%ceedling}            # 例: src/foo/
+            DEST="$ROOT/gh-pages/$REL/gcov"
+            echo ">> coverage for $CEED_DIR → $DEST"
+            mkdir -p "$DEST"
+
+            ( cd "$CEED_DIR" && ceedling gcov:all )
+            cp -r "$CEED_DIR"/build/artifacts/gcov/* "$DEST/"
+
+            # 兼容旧文件名 GcovCoverageResults.html 与新文件名 index.html
+            if [ -f "$DEST/GcovCoverageResults.html" ]; then
+              mv "$DEST/GcovCoverageResults.html" "$DEST/index.html"
+            fi
+          done
+
+      # === 你原来的 Doxygen 步骤：保持不变 ====================================
       - name: Create Doxygen documentation
         run: |
-          CUR=$PWD; 
-          for i in `find . -name Doxyfile -type f`; do P=`dirname $i`; mkdir -p gh-pages/$P; cd $P; doxygen; sed -i -e 's.<tt>..g' docs/html/navtreedata.js; sed -i -e 's.</tt>..g' docs/html/navtreedata.js; cp -r docs/html $CUR/gh-pages/$P/doxygen; cd $CUR; done
+          CUR=$PWD
+          for i in `find . -name Doxyfile -type f`; do
+            P=`dirname $i`
+            mkdir -p gh-pages/$P
+            cd $P
+            doxygen
+            sed -i -e 's.<tt>..g' docs/html/navtreedata.js
+            sed -i -e 's.</tt>..g' docs/html/navtreedata.js
+            cp -r docs/html $CUR/gh-pages/$P/doxygen
+            cd $CUR
+          done
+
+      # === 为所有目录生成简单 index.html =======================================
       - name: Create index files
         run: |
-          cd gh-pages; 
-          CUR=$PWD; 
-          for f in `find . -type d`; do cd $CUR; cd $f; if test -f index.html; then echo "index.html exists in $f"; else for i in `ls`; do echo "<a href=\"$i/index.html\">$i</a></br>" >> index.html; done; fi; cd $CUR; done
+          set -euo pipefail
+          cd gh-pages
+          ROOT=$PWD
+          find . -type d -print0 | while IFS= read -r -d '' DIR; do
+            IDX="$DIR/index.html"
+            if [ -f "$IDX" ]; then
+              echo "index.html exists in $DIR"
+              continue
+            fi
+            (
+              cd "$DIR"
+              for SUB in */ ; do
+                [ -d "$SUB" ] && echo "<a href=\"${SUB}index.html\">${SUB%/}</a><br/>" >> index.html
+              done
+            )
+          done
+
+      # === 发布到 GitHub Pages =================================================
       - name: Deploy to GitHub pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
