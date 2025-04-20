@@ -24,21 +24,23 @@ jobs:
           for i in $(find . -type d -name 'ceedling'); do
             cd "$CUR"
             P=${i%ceedling}
-            MODNAME=$(basename "$P")
-            echo "Generating coverage for module: $MODNAME"
-
+            echo "$P"
+            mkdir -p "$CUR/gh-pages/$P"
             cd "$i"
+
+            # Run unit tests and collect coverage (HTML report generated automatically)
             ceedling gcov:all
-            cd build/artifacts/gcov
-            gcovr --html -o GcovCoverageResults.html
-            mkdir -p "$CUR/gh-pages/$MODNAME/gcov"
-            cp GcovCoverageResults.html "$CUR/gh-pages/$MODNAME/gcov/index.html"
-            cp gcovr.css "$CUR/gh-pages/$MODNAME/gcov/" 2>/dev/null || true
-            cp *.gcov.html "$CUR/gh-pages/$MODNAME/gcov/" 2>/dev/null || true
 
-            cd "$CUR"
+            # Copy coverage directory to gh-pages
+            cp -r build/artifacts/gcov "$CUR/gh-pages/$P"
+
+            # Create a stable entry point for the report
+            cd "$CUR/gh-pages/$P/gcov"
+            MAIN=$(find . -maxdepth 2 -type f \
+                   \( -name 'index.html' -o -name 'GcovCoverageResults.html' \) \
+                   | head -n1)
+            [ -f "$MAIN" ] && ln -sf "$MAIN" ./index.html
           done
-
 
       - name: Create Doxygen documentation
         run: |
