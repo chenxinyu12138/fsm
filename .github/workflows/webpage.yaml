@@ -1,35 +1,42 @@
 name: Web Page
 on: workflow_dispatch
+
 jobs:
-  test:
+  build-and-deploy:
     runs-on: ubuntu-22.04
+
     steps:
-      - name: Current Repo Clone
+      - name: Checkout current repo
         uses: actions/checkout@v4
-      - name: Install  build-essential
+
+      - name: Install build-essential
         run: sudo apt-get install -y -qq build-essential
+
       - name: Install Doxygen
         run: sudo apt-get install -y -qq doxygen
+
       - name: Install Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2
+
       - name: Install Ceedling
         run: gem install ceedling -v 1.0.1
+
       - name: Install GCOVR
         run: sudo apt-get install -y -qq gcovr
-      - name: Run Coverage
+
+      - name: Generate Ceedling coverage reports
         run: |
           CUR=$PWD
           for i in $(find . -type d -name 'ceedling'); do
             cd "$CUR"
             P=${i%ceedling}
-            echo "$P"
             mkdir -p "$CUR/gh-pages/$P"
             cd "$i"
 
             ceedling gcov:all
-            
+
             cp -r build/artifacts/gcov "$CUR/gh-pages/$P"
 
             cd "$CUR/gh-pages/$P/gcov"
@@ -38,17 +45,41 @@ jobs:
                    | head -n1)
             [ -f "$MAIN" ] && ln -sf "$MAIN" ./index.html
           done
-      - name: Create Doxygen documentation
+
+      - name: Generate Doxygen documentation
         run: |
-          CUR=$PWD; 
-          for i in `find . -name Doxyfile -type f`; do P=`dirname $i`; mkdir -p gh-pages/$P; cd $P; doxygen; sed -i -e 's.<tt>..g' docs/html/navtreedata.js; sed -i -e 's.</tt>..g' docs/html/navtreedata.js; cp -r docs/html $CUR/gh-pages/$P/doxygen; cd $CUR; done
-      - name: Create index files
+          CUR=$PWD
+          for i in $(find . -name Doxyfile -type f); do
+            P=$(dirname "$i")
+            mkdir -p gh-pages/$P
+            cd "$P"
+            doxygen
+            sed -i -e 's.<tt>..g' docs/html/navtreedata.js || true
+            sed -i -e 's.</tt>..g' docs/html/navtreedata.js || true
+            cp -r docs/html "$CUR/gh-pages/$P/doxygen"
+            cd "$CUR"
+          done
+
+      - name: Create index files with links
         run: |
-          cd gh-pages; 
-          CUR=$PWD; 
-          for f in `find . -type d`; do cd $CUR; cd $f; if test -f index.html; then echo "index.html exists in $f"; else for i in `ls`; do echo "<a href=\"$i/index.html\">$i</a></br>" >> index.html; done; fi; cd $CUR; done
-      - name: Deploy to GitHub pages
+          cd gh-pages
+          CUR=$PWD
+          for f in $(find . -type d); do
+            cd "$CUR/$f"
+            if [ ! -f index.html ]; then
+              echo "<h2>Contents of $(basename $f)</h2>" > index.html
+              for i in *; do
+                if [ -f "$i/index.html" ]; then
+                  echo "<a href=\"$i/index.html\">$i</a><br/>" >> index.html
+                fi
+              done
+            fi
+          done
+          cd $CUR
+
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           BRANCH: gh-pages
           FOLDER: gh-pages
+          CLEAN: true 
