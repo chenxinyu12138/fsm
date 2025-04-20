@@ -68,8 +68,8 @@ jobs:
       - name: Merge with previous gh-pages
         run: |
           mkdir -p gh-pages
-          cp -r gh-pages-old/* gh-pages/ || true     # 旧内容
-          cp -r gh-pages-new/* gh-pages/ || true     # 新内容覆盖/新增
+          cp -r gh-pages-old/* gh-pages/ || true     
+          cp -r gh-pages-new/* gh-pages/ || true     
 
       - name: Create index files
         run: |
@@ -79,11 +79,14 @@ jobs:
             cd "$CUR/$f"
             if [ ! -f index.html ]; then
               for i in $(ls); do
-                echo "<a href=\"$i/index.html\">$i</a></br>" >> index.html
+                if [ -f "$i/index.html" ]; then
+                  echo "<a href=\"$i/index.html\">$i</a></br>" >> index.html
+                fi
               done
             fi
           done
           cd $CUR
+
 
       - name: Deploy to GitHub pages
         uses: JamesIves/github-pages-deploy-action@v4
