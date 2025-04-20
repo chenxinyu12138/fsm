@@ -15,8 +15,8 @@ jobs:
         with:
           ruby-version: 2.7
 
-      - name: Install Ceedling
-        run: gem install ceedling -v 0.31.1
+      - name: Install Ceedling 1.0.1
+        run: gem install ceedling -v 1.0.1
 
       - name: Install Ceedling Plugins
         run: |
