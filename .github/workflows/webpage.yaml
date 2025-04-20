@@ -90,5 +90,5 @@ jobs:
         with:
           BRANCH: gh-pages
           FOLDER: gh-pages
-          CLEAN: true  
+          CLEAN: false  
 
