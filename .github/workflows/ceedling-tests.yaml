@@ -33,6 +33,7 @@ jobs:
             cd $CUR
           done
 
+
       - name: Generate Coverage Report
         run: |
           CUR=$PWD
@@ -40,5 +41,5 @@ jobs:
             cd $CUR
             echo "Generating coverage in $i"
             cd $i
-            ceedling gcov:all utils:gcov
-          done
+            ceedling gcov:all
+          don
