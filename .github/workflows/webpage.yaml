@@ -48,17 +48,9 @@ jobs:
           for i in `find . -name Doxyfile -type f`; do P=`dirname $i`; mkdir -p gh-pages/$P; cd $P; doxygen; sed -i -e 's.<tt>..g' docs/html/navtreedata.js; sed -i -e 's.</tt>..g' docs/html/navtreedata.js; cp -r docs/html $CUR/gh-pages/$P/doxygen; cd $CUR; done
       - name: Create index files
         run: |
-          set +e
-          cd gh-pages || exit 0
-          for d in $(find . -type d); do
-            [ -f "$d/index.html" ] && continue
-            echo "<h2>${d#./}</h2>" > "$d/index.html" 2>/dev/null || true
-            for sub in $(ls "$d" 2>/dev/null); do
-              [ -f "$d/$sub/index.html" ] && \
-                echo "<a href=\"$sub/index.html\">$sub</a><br/>" >> "$d/index.html" 2>/dev/null || true
-            done
-          done
-          exit 0
+          cd gh-pages; 
+          CUR=$PWD; 
+          for f in `find . -type d`; do cd $CUR; cd $f; if test -f index.html; then echo "index.html exists in $f"; else for i in `ls`; do echo "<a href=\"$i/index.html\">$i</a></br>" >> index.html; done; fi; cd $CUR; done
       - name: Deploy to GitHub pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
