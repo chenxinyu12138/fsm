@@ -25,15 +25,15 @@ jobs:
             cd "$CUR"
             P=${i%ceedling}
             echo "$P"
-            mkdir -p "$CUR/gh-pages/$P"
+            mkdir -p "$CUR/b3_ci/cd/$P"
             cd "$i"
 
            
             ceedling gcov:all
 
-            cp -r build/artifacts/gcov "$CUR/gh-pages/$P"
+            cp -r build/artifacts/gcov "$CUR/b3_ci/cd/$P"
 
-            cd "$CUR/gh-pages/$P/gcov"
+            cd "$CUR/b3_ci/cd/$P/gcov"
             MAIN=$(find . -maxdepth 2 -type f \
                    \( -name 'index.html' -o -name 'GcovCoverageResults.html' \) \
                    | head -n1)
