@@ -27,22 +27,17 @@ jobs:
             MODNAME=$(basename "$P")
             echo "Generating coverage for module: $MODNAME"
 
-            mkdir -p "$CUR/gh-pages/$MODNAME/gcov"
             cd "$i"
-
             ceedling gcov:all
-
-            mkdir -p build/artifacts/gcov/html
-            cd build/artifacts/gcov/html
-            gcovr --html-details -o coverage.html
+            cd build/artifacts/gcov
+            gcovr --html -o GcovCoverageResults.html
+            mkdir -p "$CUR/gh-pages/$MODNAME/gcov"
+            cp GcovCoverageResults.html "$CUR/gh-pages/$MODNAME/gcov/index.html"
+            cp gcovr.css "$CUR/gh-pages/$MODNAME/gcov/" 2>/dev/null || true
+            cp *.gcov.html "$CUR/gh-pages/$MODNAME/gcov/" 2>/dev/null || true
 
             cd "$CUR"
-            cp -r "$i/build/artifacts/gcov/html" "$CUR/gh-pages/$MODNAME/gcov"
-
-            cd "$CUR/gh-pages/$MODNAME/gcov"
-            ln -sf html/coverage.html index.html
           done
-
 
 
       - name: Create Doxygen documentation
