@@ -29,14 +29,15 @@ jobs:
 
             ceedling gcov:all
 
-            
-            gcovr --html-details -o build/artifacts/gcov/coverage.html
+           
+            mkdir -p build/artifacts/gcov/html
+            gcovr --html-details --output-directory build/artifacts/gcov/html
 
-            cp -r build/artifacts/gcov "$CUR/gh-pages/$P"
+            cp -r build/artifacts/gcov/html "$CUR/gh-pages/$P/gcov"
 
-            
+           
             cd "$CUR/gh-pages/$P/gcov"
-            ln -sf coverage.html index.html
+            ln -sf html/coverage.html index.html
           done
 
       - name: Create Doxygen documentation
