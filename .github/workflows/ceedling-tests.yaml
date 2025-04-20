@@ -18,9 +18,6 @@ jobs:
       - name: Install Ceedling
         run: gem install ceedling -v 0.31.1
 
-      - name: Set RubyGems source
-        run: gem sources --add https://rubygems.org/ --remove https://rubygems.org/
-
       - name: Install Ceedling Plugins
         run: |
           gem install ceedling-plugin-report_tests_log_factory
