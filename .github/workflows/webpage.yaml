@@ -48,15 +48,17 @@ jobs:
           for i in `find . -name Doxyfile -type f`; do P=`dirname $i`; mkdir -p gh-pages/$P; cd $P; doxygen; sed -i -e 's.<tt>..g' docs/html/navtreedata.js; sed -i -e 's.</tt>..g' docs/html/navtreedata.js; cp -r docs/html $CUR/gh-pages/$P/doxygen; cd $CUR; done
       - name: Create index files
         run: |
-          cd gh-pages
-          find . -type d | while read d; do
-            [ -f "${d}/index.html" ] && continue
-            echo "<h2>${d#./}</h2>" > "${d}/index.html"
-            for s in $(ls "$d"); do
-              [ -f "$d/$s/index.html" ] && \
-                echo "<a href=\"$s/index.html\">$s</a><br/>" >>"${d}/index.html"
+          set +e
+          cd gh-pages || exit 0
+          for d in $(find . -type d); do
+            [ -f "$d/index.html" ] && continue
+            echo "<h2>${d#./}</h2>" > "$d/index.html" 2>/dev/null || true
+            for sub in $(ls "$d" 2>/dev/null); do
+              [ -f "$d/$sub/index.html" ] && \
+                echo "<a href=\"$sub/index.html\">$sub</a><br/>" >> "$d/index.html" 2>/dev/null || true
             done
           done
+          exit 0
       - name: Deploy to GitHub pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
