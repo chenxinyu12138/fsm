@@ -1,0 +1,116 @@
+{
+  "FailedTests": [
+
+  ],
+  "PassedTests": [
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_new_nullWhenNullTransition"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_nullWhenFirstOrigStateIsMinusOne"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_nullWhenFirstDstStateIsMinusOne"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_nullWhenFirstCheckFunctionIsNull"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_new_nonNullWhenOneValidTransitionCondition(NULL)"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_new_nonNullWhenOneValidTransitionCondition(do_nothing)"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_new_fsmGetStateReturnsOrigStateOfFirstTransitionAfterInit"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_fire_isTrueReturnsFalseMeansDoNothingIsNotCalledAndStateKeepsTheSame"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_fire_checkFunctionCalledWithFsmPointerFromFsmFire"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_fire_checkFunctionIsCalledAndResultIsImportantForTransition(false, 0)"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_fire_checkFunctionIsCalledAndResultIsImportantForTransition(true, 1)"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_new_nullWhenFsmMallocReturnsNull"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_destroy_callsFsmFree"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_fire_callsFirstIsTrueFromState0AndThenIsTrue2FromState1"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_new_calledTwiceWithSameValidDataCreatesDifferentInstancePointer"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_set_state_should_set_fsm_state"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fire_should_call_out_function"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_init_should_not_crash_with_null_transition_table"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_init_ReturnsZeroWhenExceedingMaxTransitions"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_new_ReturnsNullWhenTransitionsExceedLimit"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_new_returnsNullWhenTransitionTableMissingEndMarker"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_fire_GuardNullActsAsTrueAndTriggersTransition"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_fire_ReturnsMinusOneWhenNoTransitionsForState"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_fire_ReturnsZeroWhenGuardReturnsFalse"
+    },
+    {
+      "file": "test/test_fsm_legacy.c",
+      "test": "test_fsm_fire_ReturnsOneWhenGuardIsTrueAndFiresTransition"
+    }
+  ],
+  "IgnoredTests": [
+
+  ],
+  "Summary": {
+    "total_tests": 25,
+    "passed": 25,
+    "ignored": 0,
+    "failures": 0
+  }
+}
