@@ -25,27 +25,24 @@ jobs:
             cd "$CUR"
             P=${i%ceedling}
             MODNAME=$(basename "$P")
-            echo "📦 Generating coverage for module: $MODNAME"
+            echo "Generating coverage for module: $MODNAME"
 
-            # 创建模块输出目录
-            mkdir -p "$CUR/gh-pages/$MODNAME"
-
+            mkdir -p "$CUR/gh-pages/$MODNAME/gcov"
             cd "$i"
 
-            
             ceedling gcov:all
 
-           
             mkdir -p build/artifacts/gcov/html
-            gcovr --html-details --output-directory build/artifacts/gcov/html
+            cd build/artifacts/gcov/html
+            gcovr --html-details -o coverage.html
 
-            
-            cp -r build/artifacts/gcov/html "$CUR/gh-pages/$MODNAME/gcov"
+            cd "$CUR"
+            cp -r "$i/build/artifacts/gcov/html" "$CUR/gh-pages/$MODNAME/gcov"
 
-            
             cd "$CUR/gh-pages/$MODNAME/gcov"
             ln -sf html/coverage.html index.html
           done
+
 
 
       - name: Create Doxygen documentation
