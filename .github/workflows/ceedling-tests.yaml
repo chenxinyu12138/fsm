@@ -1,24 +1,42 @@
 name: Ceedling Testing
 on: workflow_dispatch
+
 jobs:
   test:
     runs-on: ubuntu-22.04
     steps:
       - name: Current Repo Clone
         uses: actions/checkout@v4
+
       - name: Install Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2
+
       - name: Install Ceedling
         run: gem install ceedling -v 1.0.1
+
+      - name: Verify Ceedling Installation
+        run: ceedling --version
+
+      - name: Install gcovr
+        run: sudo apt-get install -y gcovr
+
       - name: Run Unit Tests
         run: |
-          CUR=$PWD; for i in `find . -type d -name 'ceedling'`; do cd $CUR; echo $i; cd $i; ceedling test:all; done
+          CUR=$PWD
+          echo "Starting Ceedling test run..."
+          for i in $(find . -type d -name 'ceedling'); do
+            echo "Running tests in $i"
+            cd $i
+            ceedling test:all
+            cd $CUR
+          done
+
       - name: Generate Coverage Report
         run: |
           CUR=$PWD
-          for i in `find . -type d -name 'ceedling'`; do
+          for i in $(find . -type d -name 'ceedling'); do
             cd $CUR
             echo "Generating coverage in $i"
             cd $i
