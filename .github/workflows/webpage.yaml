@@ -1,7 +1,11 @@
 name: Web Page
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
 jobs:
   test:
+    needs: test
     runs-on: ubuntu-22.04
     steps:
       - name: Current Repo Clone
