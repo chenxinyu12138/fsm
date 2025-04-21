@@ -2,15 +2,17 @@
 
 Finite State Machine library written in C.
 
-# LSEL 2025 Grupo 13 ceedling-tests
+LSEL 2025 Grupo 13
+
+# Ceedling Tests
 
 [![Ceedling Testing](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/ceedling-tests.yaml/badge.svg)](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/ceedling-tests.yaml)
 
-# WebPage
+# Web Page
 
 [![Web Page](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/webpage.yaml/badge.svg)](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/webpage.yaml)
 
-# buildPage
+# GitHub Pages Deployment
 
 [![pages-build-deployment](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/pages/pages-build-deployment)
 
