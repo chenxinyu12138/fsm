@@ -593,14 +593,3 @@ void test_fsm_fire_ReturnsOneWhenGuardIsTrueAndFiresTransition(void) {
     TEST_ASSERT_EQUAL_INT(1, fsm_get_state(&fsm));  // el estado cambia
 }
 
-
-
-
-
-
-
-
-
-
-
-

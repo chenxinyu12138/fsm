@@ -112,5 +112,3 @@ for (fsm_trans_t *p_t = p_fsm->p_tt; p_t->orig_state >= 0; ++p_t)
 
 return found ? 0 : -1;
 }
-
-

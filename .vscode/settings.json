@@ -2,7 +2,7 @@
     "ceedlingExplorer.problemMatching": {
         "mode": "gcc"
     },
-    "ceedlingExplorer.debugConfiguration": "Ceedling - Debug test",
+    "ceedlingExplorer.debugConfiguration": "Ceedling - Debug test", 
     "ceedlingExplorer.prettyTestLabel": true,
     "ceedlingExplorer.projectPath": "./ceedling",
     "files.associations": {
