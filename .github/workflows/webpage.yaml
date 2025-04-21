@@ -1,8 +1,12 @@
 name: Web Page
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    needs: test
+    runs-on: ubuntu-22.04
     steps:
       - name: Current Repo Clone
         uses: actions/checkout@v4
@@ -13,15 +17,35 @@ jobs:
       - name: Install Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: 3.2
       - name: Install Ceedling
-        run: gem install ceedling -v 0.31.1
+        run: gem install ceedling -v 1.0.1
       - name: Install GCOVR
         run: sudo apt-get install -y -qq gcovr
       - name: Run Coverage
         run: |
-          CUR=$PWD; 
-          for i in `find . -type d -name 'ceedling'`; do cd $CUR; P=${i%ceedling}; echo $P; mkdir -p $CUR/gh-pages/$P; cd $i; ceedling gcov:all utils:gcov; cp -r build/artifacts/gcov $CUR/gh-pages/$P; mv $CUR/gh-pages/$P/gcov/GcovCoverageResults.html $CUR/gh-pages/$P/gcov/index.html; done
+          CUR=$PWD
+          for i in $(find . -type d -name 'ceedling'); do
+            cd "$CUR"
+            P=${i%ceedling}
+            echo "$P"
+            mkdir -p "$CUR/gh-pages/$P"
+            cd "$i"
+
+            # Run unit tests and collect coverage (HTML report generated automatically)
+            ceedling gcov:all
+
+            # Copy coverage directory to gh-pages
+            cp -r build/artifacts/gcov "$CUR/gh-pages/$P"
+
+            # Create a stable entry point for the report
+            cd "$CUR/gh-pages/$P/gcov"
+            MAIN=$(find . -maxdepth 2 -type f \
+                   \( -name 'index.html' -o -name 'GcovCoverageResults.html' \) \
+                   | head -n1)
+            [ -f "$MAIN" ] && ln -sf "$MAIN" ./index.html
+          done
+
       - name: Create Doxygen documentation
         run: |
           CUR=$PWD; 

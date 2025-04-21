@@ -1,42 +1,20 @@
 name: Ceedling Testing
-
-on: 
-  workflow_dispatch:
-
+on:
+  push:
+    branches:
+      - main
 jobs:
   test:
     runs-on: ubuntu-22.04
     steps:
       - name: Current Repo Clone
         uses: actions/checkout@v4
-
       - name: Install Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
-
+          ruby-version: 3.2
       - name: Install Ceedling
-        run: gem install ceedling -v 0.31.1
-
-      - name: Set RubyGems source
-        run: gem sources --add https://rubygems.org/ --remove https://rubygems.org/
-
-      - name: Install Ceedling Plugins
-        run: |
-          gem install ceedling-plugin-report_tests_log_factory
-          gem install ceedling-plugin-report_tests_pretty_stdout
-
-      - name: Clean Ceedling Build
-        run: |
-          rm -rf build
-          rm -rf .ceedling
-
+        run: gem install ceedling -v 1.0.1
       - name: Run Unit Tests
         run: |
-          CUR=$PWD
-          for i in `find . -type d -name 'ceedling'`; do
-            cd $CUR
-            echo "Running tests in $i"
-            cd $i
-            ceedling test:all
-          done
+          CUR=$PWD; for i in `find . -type d -name 'ceedling'`; do cd $CUR; echo $i; cd $i; ceedling test:all; done
