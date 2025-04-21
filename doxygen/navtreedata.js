@@ -25,7 +25,12 @@
 var NAVTREE =
 [
   [ "FSM", "index.html", [
-    [ "fsm", "index.html", null ],
+    [ "fsm", "index.html", [
+      [ "LSEL 2025 Grupo 13 ceedling-tests", "index.html#autotoc_md1", null ],
+      [ "WebPage", "index.html#autotoc_md2", null ],
+      [ "buildPage", "index.html#autotoc_md3", null ],
+      [ "Documentación del Proyecto", "index.html#autotoc_md4", null ]
+    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
