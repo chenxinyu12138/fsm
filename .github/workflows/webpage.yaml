@@ -4,8 +4,7 @@ on:
     branches:
       - main
 jobs:
-  deploy:
-    needs: test
+  test:
     runs-on: ubuntu-22.04
     steps:
       - name: Current Repo Clone
