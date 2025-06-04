@@ -6,18 +6,18 @@ LSEL 2025 Grupo 13
 
 # Ceedling Tests
 
-[![Ceedling Testing](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/ceedling-tests.yaml/badge.svg)](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/ceedling-tests.yaml)
+[![Ceedling Testing](https://github.com/chenxinyu12138/fsm/actions/workflows/ceedling-tests.yaml/badge.svg)](https://github.com/chenxinyu12138/fsm/actions/workflows/ceedling-tests.yaml)
 
 # Web Page
 
-[![Web Page](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/webpage.yaml/badge.svg)](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/webpage.yaml)
+[![Web Page](https://github.com/chenxinyu12138/fsm/actions/workflows/webpage.yaml/badge.svg)](https://github.com/chenxinyu12138/fsm/actions/workflows/webpage.yaml)
 
 # GitHub Pages Deployment
 
-[![pages-build-deployment](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/chenxinyu12138/lsel2025-13/actions/workflows/pages/pages-build-deployment)
+[![pages-build-deployment](https://github.com/chenxinyu12138/fsm/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/chenxinyu12138/fsm/actions/workflows/pages/pages-build-deployment)
 
 # Documentación del Proyecto
 
 Puedes consultar la documentación generada automáticamente en:
 
-[Ver documentación en línea](https://chenxinyu12138.github.io/lsel2025-13/)
+[Ver documentación en línea](https://chenxinyu12138.github.io/fsm/)
